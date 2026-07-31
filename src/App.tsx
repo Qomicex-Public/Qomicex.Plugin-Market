@@ -288,7 +288,7 @@ function StoreApp() {
             />
           </div>
           <p className="text-xs text-muted-foreground">
-            留空则使用内置目录。仓库需返回 JSON：{'{ "plugins": [ { "id": "...", "downloadUrl": "...", ... } ] }'}
+            留空则使用默认远程仓库（Qomicex.Plugin-Market 的 repository 分支），加载失败时回退内置目录。仓库需返回 JSON：{'{ "plugins": [ { "id": "...", "downloadUrl": "...", ... } ] }'}
           </p>
         </DialogBody>
         <DialogFooter className="flex gap-2 justify-end">

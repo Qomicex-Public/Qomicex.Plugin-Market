@@ -39,5 +39,27 @@ export const BUILTIN_CATALOG: CatalogPlugin[] = [
       "娱乐"
     ],
     "downloadUrl": "packages/com.qomicex.launch-meme.qplugin"
+  },
+  {
+    "id": "com.qomicex.example-toolkit",
+    "name": "示例工具包",
+    "description": "官方插件开发示例：完整演示 Qomicex 组件库与插件 API 的用法，是插件开发者的最佳入门参考。",
+    "author": "Qomicex",
+    "icon": "🧰",
+    "version": "1.0.0",
+    "minLauncherVersion": "0.1.0",
+    "permissions": [
+      "ui:toast",
+      "ui:navigate",
+      "config:read",
+      "config:write",
+      "http:request",
+      "shell:execute"
+    ],
+    "tags": [
+      "开发",
+      "示例"
+    ],
+    "downloadUrl": "packages/example-toolkit.qplugin"
   }
 ]

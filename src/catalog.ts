@@ -11,9 +11,12 @@ interface RegistryJson {
   plugins?: CatalogPlugin[]
 }
 
+export const DEFAULT_REGISTRY_URL =
+  'https://raw.githubusercontent.com/Qomicex-Public/Qomicex.Plugin-Market/repository/plugins.json'
+
 export async function loadCatalog(): Promise<CatalogResult> {
   const settings = await getSettings()
-  const registryUrl = (settings.registryUrl as string | undefined)?.trim()
+  const registryUrl = (settings.registryUrl as string | undefined)?.trim() || DEFAULT_REGISTRY_URL
   if (registryUrl) {
     try {
       const resp = await proxyFetch({ url: registryUrl })
