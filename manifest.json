@@ -1,0 +1,21 @@
+{
+  "id": "top.qomicex.market",
+  "name": "插件商店",
+  "version": "1.0.0",
+  "minLauncherVersion": "0.1.0",
+  "layers": ["l0", "l2"],
+  "permissions": [
+    "config:read",
+    "config:write",
+    "network:fetch",
+    "network:cors_proxy",
+    "ui:toast",
+    "ui:navigate",
+    "ui:inject_sidebar",
+    "plugin:install"
+  ],
+  "entry": { "frontend": "dist/index.html" },
+  "contributes": {
+    "menuItems": [{ "path": "/plugins/p/top.qomicex.market", "label": "插件商店", "icon": "🛍" }]
+  }
+}
