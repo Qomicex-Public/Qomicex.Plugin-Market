@@ -48,6 +48,17 @@
 }
 
 .rounded-xl.border {
-  --tw-border-style: solid;
-  border-color: var(--card);
+  border-color: var(--card) !important;
+}
+
+.border-border {
+  border-color: var(--card) !important;
+}
+
+.border-b {
+  border-color: var(--card) !important;
+}
+
+.border-t {
+  border-color: var(--card) !important;
 }
