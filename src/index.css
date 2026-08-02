@@ -19,7 +19,7 @@
   --accent-foreground: 220 20% 93%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 220 20% 93%;
-  --border: 228 14% 21%;
+  --border: 228 18% 10%;
   --input: 228 14% 21%;
   --ring: 142 71% 48%;
   --radius: 0.625rem;
@@ -42,7 +42,12 @@
   --accent-foreground: 228 20% 10%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  --border: 228 12% 88%;
+  --border: 0 0% 95%;
   --input: 228 12% 88%;
   --ring: 142 71% 42%;
+}
+
+.rounded-xl.border {
+  --tw-border-style: solid;
+  border-color: var(--card);
 }
