@@ -79,6 +79,7 @@ function buildEntries() {
       permissions: Array.isArray(manifest.permissions) ? manifest.permissions : [],
       tags: Array.isArray(m.tags) ? m.tags : [],
       downloadUrl: 'packages/' + path.basename(pkg),
+      ...(Array.isArray(manifest.dependencies) && manifest.dependencies.length > 0 ? { dependencies: manifest.dependencies } : {}),
     })
   }
   return entries

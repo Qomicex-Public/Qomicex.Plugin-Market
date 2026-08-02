@@ -85,14 +85,40 @@ function StoreApp() {
     )
   }, [catalog, search, typeFilter])
 
+  const allPlugins = useMemo(() => catalog?.plugins ?? [], [catalog])
+  const pluginById = useMemo(() => new Map(allPlugins.map(p => [p.id, p])), [allPlugins])
+
+  const resolveDeps = (p: CatalogPlugin, visited = new Set<string>()): CatalogPlugin[] => {
+    if (visited.has(p.id)) return []
+    visited.add(p.id)
+    const deps: CatalogPlugin[] = []
+    for (const depId of (p.dependencies ?? [])) {
+      const dep = pluginById.get(depId)
+      if (!dep || isInstalled(depId)) continue
+      deps.push(...resolveDeps(dep, visited), dep)
+    }
+    return deps
+  }
+
   const handleInstall = async (p: CatalogPlugin) => {
     if (isBusy(p.id)) return
     setBusyId(p.id)
     try {
-      await installFromUrl(p.downloadUrl, mirrors)
+      const deps = resolveDeps(p)
+      const seen = new Set<string>()
+      const toInstall = [p, ...deps.filter(d => { if (seen.has(d.id)) return false; seen.add(d.id); return true })]
+      for (const item of toInstall) {
+        await installFromUrl(item.downloadUrl, mirrors)
+      }
       await refresh()
       setDetail(null)
-      showToast(`「${p.name}」安装成功`, 'success')
+      const depCount = toInstall.length - 1
+      showToast(
+        depCount > 0
+          ? `已安装「${p.name}」及 ${depCount} 个依赖`
+          : `「${p.name}」安装成功`,
+        'success',
+      )
     } catch (e) {
       showToast(e instanceof Error ? e.message : '安装失败', 'error')
     } finally {
@@ -206,6 +232,22 @@ function StoreApp() {
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">最低启动器版本</span>
                   <span>{detail.minLauncherVersion}</span>
+                </div>
+              )}
+              {detail.dependencies && detail.dependencies.length > 0 && (
+                <div>
+                  <p className="text-sm text-muted-foreground mb-2">依赖</p>
+                  <div className="flex flex-wrap gap-2">
+                    {detail.dependencies.map(depId => {
+                      const dep = pluginById.get(depId)
+                      const installed = isInstalled(depId)
+                      return (
+                        <Badge key={depId} variant={installed ? 'secondary' : 'outline'}>
+                          {dep ? dep.name : depId}{installed ? ' (已安装)' : ''}
+                        </Badge>
+                      )
+                    })}
+                  </div>
                 </div>
               )}
               {detail.permissions.length > 0 && (

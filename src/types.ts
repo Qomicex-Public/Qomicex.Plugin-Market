@@ -12,6 +12,7 @@ export interface CatalogPlugin {
   permissions: string[]
   tags: string[]
   downloadUrl: string
+  dependencies?: string[]
 }
 
 export interface InstalledPlugin {
