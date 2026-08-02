@@ -35,7 +35,7 @@ function resolveIcon(src: string): string {
 }
 
 function isImageUrl(s: string): boolean {
-  return /^(https?:\/\/|[\w.-]+\/.+\.\w+)/.test(s)
+  return /^(https?:\/\/|data:|[\w.-]+\/.+\.\w+)/.test(s)
 }
 
 function PluginIcon({ icon, className }: { icon: string; className?: string }) {
