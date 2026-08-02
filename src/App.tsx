@@ -46,9 +46,10 @@ function StoreApp() {
   const [newMirror, setNewMirror] = useState('')
 
   const refresh = useCallback(async () => {
-    const [cat, inst] = await Promise.all([loadCatalog(), listPlugins()])
-    setCatalog(cat)
-    setInstalled(inst)
+    const [cat, inst] = await Promise.allSettled([loadCatalog(), listPlugins()])
+    if (cat.status === 'fulfilled') setCatalog(cat.value)
+    else showToast('加载插件目录失败: ' + (cat.reason instanceof Error ? cat.reason.message : String(cat.reason)), 'error')
+    if (inst.status === 'fulfilled') setInstalled(inst.value)
   }, [])
 
   useEffect(() => {
@@ -139,11 +140,6 @@ function StoreApp() {
             onChange={e => setSearch(e.target.value)}
           />
           <Tabs tabs={typeTabs} activeTab={typeFilter} onChange={id => setTypeFilter(id as 'all' | PluginType)} />
-          {catalog?.source === 'builtin' && (
-            <p className="text-xs text-muted-foreground">
-              当前展示内置目录（未配置远程仓库或远程加载失败），可在右上角 ⚙ 中配置仓库地址
-            </p>
-          )}
           {catalog && filtered.length === 0 && (
             <p className="text-sm text-muted-foreground">未找到匹配的插件</p>
           )}
