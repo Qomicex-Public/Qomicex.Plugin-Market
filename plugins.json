@@ -8,6 +8,7 @@
       "icon": "🧠",
       "version": "1.0.0",
       "minLauncherVersion": "0.1.0",
+      "dependencies": ["com.qomicex.example-toolkit"],
       "permissions": [
         "ui:toast",
         "ui:sub_window",
@@ -20,7 +21,23 @@
         "工具",
         "AI"
       ],
-      "downloadUrl": "https://raw.githubusercontent.com/Qomicex-Public/Qomicex.Plugin-Market/repository/packages/Qomicex.Plugin-AI.Assistant.qplugin"
+      "downloadUrl": "https://raw.githubusercontent.com/Qomicex-Public/Qomicex.Plugin-Market/repository/packages/top.qomicex.assistant.qplugin"
+    },
+    {
+      "id": "top.qomicex.assistant",
+      "name": "Markdown Lib",
+      "description": "内置Markdown解析器，将Markdown文档译为HTML，为其它插件提供Markdown渲染能力",
+      "author": "Qomicex",
+      "icon": "📚",
+      "version": "1.2.0",
+      "minLauncherVersion": "0.1.0",
+      "permissions": [
+        "config:write"
+      ],
+      "tags": [
+        "Libraries"
+      ],
+      "downloadUrl": "https://raw.githubusercontent.com/Qomicex-Public/Qomicex.Plugin-Market/repository/packages/top.qomicex.markdown.qplugin"
     },
     {
       "id": "com.qomicex.launch-meme",
