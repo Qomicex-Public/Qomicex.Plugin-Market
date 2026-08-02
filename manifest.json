@@ -19,6 +19,6 @@
   ],
   "entry": { "frontend": "dist/index.html" },
   "contributes": {
-    "menuItems": [{ "path": "/plugins/p/top.qomicex.market", "label": "插件商店", "icon": "dist/icon.svg" }]
+    "menuItems": [{ "path": "/plugins/p/top.qomicex.market", "label": "插件商店", "icon": "fa-solid fa-store" }]
   }
 }
