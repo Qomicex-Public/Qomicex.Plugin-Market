@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   Badge, Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
   Dialog, DialogBody, DialogFooter, DialogHeader, DialogTitle,
-  Input, Label, MessageBoxProvider, Separator, Tabs, TabContent, Tooltip,
+  Input, Label, MessageBoxProvider, Separator, Tabs, TabContent, Tooltip, cn,
 } from '@qomicex/plugin-ui'
 import type { Tab } from '@qomicex/plugin-ui'
 import {
@@ -13,6 +13,7 @@ import { DEFAULT_MIRRORS } from './catalog.ts'
 import type { CatalogResult } from './catalog.ts'
 import { permissionLabel } from './permissions.ts'
 import type { CatalogPlugin, InstalledPlugin, PluginType } from './types.ts'
+import { resolveFaIcon } from './BuiltinIcons.tsx'
 
 const tabs: Tab[] = [
   { id: 'store', label: '商店' },
@@ -33,15 +34,23 @@ function resolveIcon(src: string): string {
   return src
 }
 
+function isImageUrl(s: string): boolean {
+  return /^(https?:\/\/|[\w.-]+\/.+\.\w+)/.test(s)
+}
+
 function PluginIcon({ icon, className }: { icon: string; className?: string }) {
   const src = resolveIcon(icon)
-  if (/^(https?:\/\/|[\w-]+\/.+\.\w+)/.test(src)) {
-    return <img src={src} alt="" className={className} style={{ width: '1.5em', height: '1.5em', objectFit: 'contain', verticalAlign: '-0.15em' }} />
+
+  if (isImageUrl(src)) {
+    return <img src={src} alt="" className={cn('object-contain', className)} style={{ width: '1.5em', height: '1.5em', objectFit: 'contain', verticalAlign: '-0.15em' }} />
   }
-  if (src.startsWith('fa-')) {
-    return <i className={cn('fa-solid', src, className)} style={{ width: '1.5em', height: '1.5em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }} />
+
+  const faCls = resolveFaIcon(src)
+  if (faCls) {
+    return <i className={cn(faCls, className)} style={{ width: '1.5em', height: '1.5em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }} />
   }
-  return <span className={className}>{src}</span>
+
+  return <span className={cn('text-sm', className)}>{src}</span>
 }
 
 export default function App() {
