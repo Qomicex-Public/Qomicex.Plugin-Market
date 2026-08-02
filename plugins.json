@@ -3,12 +3,12 @@
     {
       "id": "top.qomicex.assistant",
       "name": "AI 助手",
-      "description": "内置 DeepSeek 对话能力，支持悬浮窗快速问答、代码高亮与 Markdown 渲染，可自定义模型与接口地址。",
+      "description": "内置 AI Agent能力，支持悬浮窗快速问答启动器和游戏相关问题、代码高亮与 Markdown 渲染，可自定义模型与接口地址。",
       "author": "Qomicex",
       "icon": "🧠",
       "version": "1.0.0",
       "minLauncherVersion": "0.1.0",
-      "dependencies": ["com.qomicex.example-toolkit"],
+      "dependencies": ["top.qomicex.markdown"],
       "permissions": [
         "ui:toast",
         "ui:sub_window",
