@@ -28,6 +28,7 @@
       "name": "Markdown Lib",
       "description": "内置Markdown解析器，将Markdown文档译为HTML，为其它插件提供Markdown渲染能力",
       "author": "Qomicex",
+      "type": "library",
       "icon": "📚",
       "version": "1.2.0",
       "minLauncherVersion": "0.1.0",
