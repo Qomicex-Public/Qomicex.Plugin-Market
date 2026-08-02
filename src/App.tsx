@@ -24,6 +24,13 @@ const typeTabs: Tab[] = [
   { id: 'library', label: '支持库' },
 ]
 
+function PluginIcon({ icon, className }: { icon: string; className?: string }) {
+  if (/^(https?:\/\/|[\w-]+\/.+\.\w+)/.test(icon)) {
+    return <img src={icon} alt="" className={className} style={{ width: '1.5em', height: '1.5em', objectFit: 'contain', verticalAlign: '-0.15em' }} />
+  }
+  return <span className={className}>{icon}</span>
+}
+
 export default function App() {
   return (
     <MessageBoxProvider>
@@ -174,7 +181,7 @@ function StoreApp() {
               <Card key={p.id} className="cursor-pointer" onClick={() => setDetail(p)}>
                 <CardHeader>
                   <div className="flex items-center justify-between">
-                    <span className="text-2xl leading-none">{p.icon}</span>
+                    <span className="text-2xl leading-none"><PluginIcon icon={p.icon} /></span>
                     <div className="flex items-center gap-1.5">
                       <Badge variant={p.type === 'library' ? 'secondary' : 'outline'}>
                         {p.type === 'library' ? '支持库' : '插件'}
@@ -208,7 +215,7 @@ function StoreApp() {
           <>
             <DialogHeader onClose={() => setDetail(null)}>
               <DialogTitle className="flex items-center gap-2">
-                <span>{detail.icon}</span>{detail.name}
+                <PluginIcon icon={detail.icon} className="text-2xl" />{detail.name}
               </DialogTitle>
             </DialogHeader>
             <DialogBody className="space-y-3">
