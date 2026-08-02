@@ -6,7 +6,7 @@
       "description": "内置 AI Agent能力，支持悬浮窗快速问答启动器和游戏相关问题、代码高亮与 Markdown 渲染，可自定义模型与接口地址。",
       "author": "Qomicex",
       "icon": "fa-solid fa-brain",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "minLauncherVersion": "0.1.0",
       "dependencies": ["top.qomicex.markdown"],
       "permissions": [
