@@ -38,6 +38,9 @@ function PluginIcon({ icon, className }: { icon: string; className?: string }) {
   if (/^(https?:\/\/|[\w-]+\/.+\.\w+)/.test(src)) {
     return <img src={src} alt="" className={className} style={{ width: '1.5em', height: '1.5em', objectFit: 'contain', verticalAlign: '-0.15em' }} />
   }
+  if (src.startsWith('fa-')) {
+    return <i className={cn('fa-solid', src, className)} style={{ width: '1.5em', height: '1.5em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }} />
+  }
   return <span className={className}>{src}</span>
 }
 
