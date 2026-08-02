@@ -8,6 +8,7 @@ export const BUILTIN_CATALOG: CatalogPlugin[] = [
     "description": "内置 DeepSeek 对话能力，支持悬浮窗快速问答、代码高亮与 Markdown 渲染，可自定义模型与接口地址。",
     "author": "Qomicex",
     "icon": "🧠",
+    "type": "plugin",
     "version": "1.0.0",
     "minLauncherVersion": "0.1.0",
     "permissions": [
@@ -16,7 +17,9 @@ export const BUILTIN_CATALOG: CatalogPlugin[] = [
       "ui:inject_sidebar",
       "config:read",
       "config:write",
-      "network:fetch"
+      "network:fetch",
+      "network:cors_proxy",
+      "cache:access"
     ],
     "tags": [
       "工具",
@@ -30,6 +33,7 @@ export const BUILTIN_CATALOG: CatalogPlugin[] = [
     "description": "在启动游戏时随机播放一段整活动画，为漫长的加载等待增添乐趣。",
     "author": "Qomicex",
     "icon": "😆",
+    "type": "plugin",
     "version": "1.0.0",
     "minLauncherVersion": "0.1.0",
     "permissions": [
@@ -46,6 +50,7 @@ export const BUILTIN_CATALOG: CatalogPlugin[] = [
     "description": "官方插件开发示例：完整演示 Qomicex 组件库与插件 API 的用法，是插件开发者的最佳入门参考。",
     "author": "Qomicex",
     "icon": "🧰",
+    "type": "plugin",
     "version": "1.0.0",
     "minLauncherVersion": "0.1.0",
     "permissions": [

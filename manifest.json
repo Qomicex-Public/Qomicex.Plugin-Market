@@ -12,7 +12,10 @@
     "ui:toast",
     "ui:navigate",
     "ui:inject_sidebar",
-    "plugin:install"
+    "system:info",
+    "system:notification",
+    "plugin:install",
+    "plugin:list"
   ],
   "entry": { "frontend": "dist/index.html" },
   "contributes": {

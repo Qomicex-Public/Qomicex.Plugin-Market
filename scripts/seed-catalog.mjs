@@ -73,6 +73,7 @@ function buildEntries() {
       description: m.description || '暂无简介',
       author: m.author || '未知作者',
       icon: m.icon || '📦',
+      type: (m.type === 'library' || m.type === 'plugin') ? m.type : 'plugin',
       version: manifest.version || '0.0.0',
       minLauncherVersion: manifest.minLauncherVersion || '',
       permissions: Array.isArray(manifest.permissions) ? manifest.permissions : [],

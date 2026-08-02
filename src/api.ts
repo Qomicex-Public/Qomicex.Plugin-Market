@@ -63,46 +63,62 @@ export function proxyFetch(req: ProxyRequest): Promise<ProxyResponse> {
   return apiCall<ProxyResponse>('proxyFetch', req)
 }
 
+function callBackend<T = unknown>(endpoint: string, data?: unknown): Promise<T> {
+  return apiCall<T>('callBackend', endpoint, data)
+}
+
 export async function listPlugins(): Promise<InstalledPlugin[]> {
-  const res = await fetch('/api/plugins/')
-  if (!res.ok) throw new Error(`获取插件列表失败 (${res.status})`)
-  return res.json()
+  const data = await callBackend<unknown[]>('/plugins/')
+  if (!Array.isArray(data)) return []
+  return data.map((p: any) => ({
+    manifest: {
+      id: p.manifest?.id ?? p.id ?? '',
+      name: p.manifest?.name ?? p.name ?? '',
+      version: p.manifest?.version ?? p.version ?? '',
+    },
+    state: p.status === 'active' ? 'active' : 'disabled',
+  }))
 }
 
 export async function setPluginState(id: string, state: string): Promise<void> {
-  const res = await fetch(`/api/plugins/${encodeURIComponent(id)}/state`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ state }),
-  })
-  if (!res.ok) throw new Error(`操作失败 (${res.status})`)
+  await callBackend(`/plugins/${encodeURIComponent(id)}/state`, { _method: 'PUT', State: state })
 }
 
 export async function uninstallPlugin(id: string): Promise<void> {
-  const res = await fetch(`/api/plugins/${encodeURIComponent(id)}`, { method: 'DELETE' })
-  if (!res.ok) throw new Error(`卸载失败 (${res.status})`)
+  await callBackend(`/plugins/${encodeURIComponent(id)}`, { _method: 'DELETE' })
 }
 
-async function downloadBlob(downloadUrl: string): Promise<Blob> {
+async function downloadBlob(downloadUrl: string, mirrorPrefixes: string[] = []): Promise<Blob> {
   if (downloadUrl.startsWith('http://') || downloadUrl.startsWith('https://')) {
-    const resp = await proxyFetch({ url: downloadUrl })
-    if (resp.status >= 400) throw new Error(`下载失败 (HTTP ${resp.status})`)
-    if (resp.bodyBase64) return base64ToBlob(resp.bodyBase64)
-    if (resp.body != null) return new Blob([resp.body])
-    throw new Error('下载失败: 未获取到内容')
+    const attempted = new Set<string>()
+    const targets = [downloadUrl, ...mirrorPrefixes.filter(p => p).map(p => p.replace(/\/+$/, '') + '/' + downloadUrl)]
+    for (const target of targets) {
+      if (attempted.has(target)) continue
+      attempted.add(target)
+      try {
+        const resp = await proxyFetch({ url: target, timeoutMs: 15000 })
+        if (resp.status >= 400) continue
+        if (resp.bodyBase64) return base64ToBlob(resp.bodyBase64)
+        if (resp.body != null) return new Blob([resp.body])
+      } catch {
+        // 尝试下一个镜像
+      }
+    }
+    throw new Error('下载失败: 所有下载源均不可用')
   }
-  const res = await fetch(`/api/plugins/${PLUGIN_ID}/files/${downloadUrl}`)
-  if (!res.ok) throw new Error(`下载失败 (${res.status})`)
-  return res.blob()
+  const resp = await callBackend<{ status: number; bodyBase64?: string; body?: string }>(
+    `/plugins/${PLUGIN_ID}/files/${downloadUrl}`
+  )
+  if (resp.status >= 400) throw new Error(`下载失败 (${resp.status})`)
+  if (resp.bodyBase64) return base64ToBlob(resp.bodyBase64)
+  if (resp.body != null) return new Blob([resp.body])
+  return new Blob()
 }
 
-export async function installFromUrl(downloadUrl: string): Promise<unknown> {
-  const blob = await downloadBlob(downloadUrl)
-  const fd = new FormData()
-  fd.append('plugin', blob, 'package.qplugin')
-  const res = await fetch('/api/plugins/upload', { method: 'POST', body: fd })
-  if (!res.ok) throw new Error(`安装失败 (${res.status})`)
-  return res.json()
+export async function installFromUrl(downloadUrl: string, mirrorPrefixes?: string[]): Promise<unknown> {
+  const blob = await downloadBlob(downloadUrl, mirrorPrefixes)
+  const buf = await blob.arrayBuffer()
+  return apiCall('uploadPlugin', Array.from(new Uint8Array(buf)), 'package.qplugin')
 }
 
 function base64ToBlob(b64: string): Blob {
