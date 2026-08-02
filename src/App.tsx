@@ -24,11 +24,20 @@ const typeTabs: Tab[] = [
   { id: 'library', label: '支持库' },
 ]
 
+function resolveIcon(src: string): string {
+  if (!src) return src
+  if (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('/') || src.startsWith('data:')) return src
+  const base = (typeof window !== 'undefined' && (window as any).__PLUGIN_API_BASE__) as string | undefined
+  if (base) return `${base}/${src.replace(/^\.\//, '')}`
+  return src
+}
+
 function PluginIcon({ icon, className }: { icon: string; className?: string }) {
-  if (/^(https?:\/\/|[\w-]+\/.+\.\w+)/.test(icon)) {
-    return <img src={icon} alt="" className={className} style={{ width: '1.5em', height: '1.5em', objectFit: 'contain', verticalAlign: '-0.15em' }} />
+  const src = resolveIcon(icon)
+  if (/^(https?:\/\/|[\w-]+\/.+\.\w+)/.test(src)) {
+    return <img src={src} alt="" className={className} style={{ width: '1.5em', height: '1.5em', objectFit: 'contain', verticalAlign: '-0.15em' }} />
   }
-  return <span className={className}>{icon}</span>
+  return <span className={className}>{src}</span>
 }
 
 export default function App() {
