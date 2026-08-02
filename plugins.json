@@ -24,7 +24,7 @@
       "downloadUrl": "https://raw.githubusercontent.com/Qomicex-Public/Qomicex.Plugin-Market/repository/packages/top.qomicex.assistant.qplugin"
     },
     {
-      "id": "top.qomicex.assistant",
+      "id": "top.qomicex.markdown",
       "name": "Markdown Lib",
       "description": "内置Markdown解析器，将Markdown文档译为HTML，为其它插件提供Markdown渲染能力",
       "author": "Qomicex",
