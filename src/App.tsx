@@ -27,6 +27,7 @@ const typeTabs: Tab[] = [
 function resolveIcon(src: string): string {
   if (!src) return src
   if (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('/') || src.startsWith('data:')) return src
+  if (!/[/.]/.test(src)) return src
   const base = (typeof window !== 'undefined' && (window as any).__PLUGIN_API_BASE__) as string | undefined
   if (base) return `${base}/${src.replace(/^\.\//, '')}`
   return src
